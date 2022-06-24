@@ -29,24 +29,21 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   /**************************************************************************** */
   app.get( "/filteredimage", async ( req, res ) => {
-    let url = req.param('image_url');
+    const url = req.param('image_url');
 
     if (!url){
       res.status(400).send("image_url invalid")
     }
 
-    let image_filter_path = await filterImageFromURL(url);
+    const image_filter_path = await filterImageFromURL(url);
 
     res.status(200).sendFile(image_filter_path)
-    await sleep(20000);
-    deleteLocalFiles([image_filter_path]);
+
+    setInterval(() => {
+      deleteLocalFiles([image_filter_path]);
+    }, 30000)
   } );
 
-  function sleep(ms:number) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }
 
 
   //! END @TODO1
